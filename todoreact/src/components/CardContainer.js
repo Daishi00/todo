@@ -16,7 +16,8 @@ const CardContainer = ({
   useEffect(() => {
     const fetchTasks = async () => {
       try {
-        const res = await api.get("/todos");
+        const res = await api.get("/tasks");
+        console.log(res.data);
         setTasks(res.data);
       } catch (err) {
         console.log(err);
@@ -33,7 +34,7 @@ const CardContainer = ({
             id={task.id}
             title={task.title}
             body={task.body}
-            isComplete={task.isComplete}
+            finished={task.finished}
             key={task.id}
             tasks={tasks}
             edit={edit}

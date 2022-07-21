@@ -1,31 +1,50 @@
 import React from "react";
 import styled from "styled-components";
 import api from "../utils/api";
-import { Link } from "react-router-dom";
-const Card = ({ title, body, id, isComplete, tasks, setTasks, edit }) => {
+const Card = ({
+  title,
+  body,
+  id,
+  finished,
+  setTitle,
+  setBody,
+  setEdit,
+  setIdEdit,
+  tasks,
+  setTasks,
+  edit,
+}) => {
+  const onEdit = () => {
+    if (finished) return alert("You cannot edit finished tasks");
+    window.scrollTo(0, 0);
+    setEdit(true);
+    setTitle(title);
+    setBody(body);
+    setIdEdit(id);
+  };
+
   const handleFinish = async () => {
     if (edit)
       return alert("Please complete your editing before finishing a task");
     try {
-      const res = await api.put(`/todos/${id}`, {
+      await api.put(`/tasks/${id}`, {
         title: title,
         body: body,
-        isComplete: !isComplete,
-        id: id,
+        finished: !finished,
       });
       const updateTasks = tasks.map((task) => {
         if (task.id === id) {
-          return res.data;
+          return { ...task, finished: !finished };
         } else return task;
       });
-      await setTasks(updateTasks);
+      setTasks(updateTasks);
     } catch (err) {
       console.log(err);
     }
   };
 
   return (
-    <Wrapper style={isComplete ? { backgroundColor: " #44bba4" } : null}>
+    <Wrapper style={finished ? { backgroundColor: " #44bba4" } : null}>
       <div className="card-title">
         <p>{title}</p>
       </div>
@@ -34,24 +53,22 @@ const Card = ({ title, body, id, isComplete, tasks, setTasks, edit }) => {
       </div>
       <div className="icons">
         <button
-          className="material-symbols-outlined icon"
+          className="material-symbols-outlined icon done"
           onClick={handleFinish}
         >
           done
         </button>
-        <Link
-          to="/edit"
-          state={{ title, body, id }}
-          className="material-symbols-outlined icon"
-        >
+        <button className="material-symbols-outlined icon" onClick={onEdit}>
           edit
-        </Link>
+        </button>
       </div>
     </Wrapper>
   );
 };
 
-const Wrapper = styled.div`
+const Wrapper = styled.div.attrs((props) => ({
+  className: props.className,
+}))`
   width: 100%;
   border: 1px solid #dfdfdf;
   border-radius: var(--border-radius);
@@ -93,9 +110,6 @@ const Wrapper = styled.div`
       cursor: pointer;
       border: none;
       padding: 0;
-    }
-    a {
-      text-decoration: none;
     }
   }
 `;

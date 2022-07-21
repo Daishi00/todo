@@ -1,7 +1,6 @@
 import React from "react";
 import styled from "styled-components";
 import api from "../utils/api";
-import { useNavigate } from "react-router";
 
 const Form = ({
   setTitle,
@@ -14,15 +13,13 @@ const Form = ({
   edit,
   idEdit,
 }) => {
-  let navigate = useNavigate();
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (formValidation() === false) return;
     try {
-      const newTask = { title, body, isComplete: false };
-      const res = await api.post("/todos", newTask);
-      setTasks([...tasks, res.data]);
+      const newTask = { id: tasks.length + 1, title, body, finished: false };
+      await api.post("/tasks", newTask);
+      setTasks([...tasks, newTask]);
       setTitle("");
       setBody("");
     } catch (err) {
@@ -34,22 +31,20 @@ const Form = ({
     e.preventDefault();
     if (formValidation() === false) return;
     try {
-      const res = await api.put(`/todos/${idEdit}`, {
+      await api.put(`/tasks/${idEdit}`, {
         title: title,
         body: body,
-        isComplete: false,
-        id: idEdit,
+        finished: false,
       });
       const updateTasks = tasks.map((task) => {
         if (task.id === idEdit) {
-          return res.data;
+          return { ...task, title: title, body: body };
         } else return task;
       });
       setTasks(updateTasks);
       setEdit(false);
       setTitle("");
       setBody("");
-      navigate("/dashboard");
     } catch (err) {
       console.log(err);
     }
