@@ -1,50 +1,31 @@
 import React from "react";
 import styled from "styled-components";
 import api from "../utils/api";
-const Card = ({
-  title,
-  body,
-  id,
-  finished,
-  setTitle,
-  setBody,
-  setEdit,
-  setIdEdit,
-  tasks,
-  setTasks,
-  edit,
-}) => {
-  const onEdit = () => {
-    if (finished) return alert("You cannot edit finished tasks");
-    window.scrollTo(0, 0);
-    setEdit(true);
-    setTitle(title);
-    setBody(body);
-    setIdEdit(id);
-  };
-
+import { Link } from "react-router-dom";
+const Card = ({ title, body, id, isComplete, tasks, setTasks, edit }) => {
   const handleFinish = async () => {
     if (edit)
       return alert("Please complete your editing before finishing a task");
     try {
-      await api.put(`/tasks/${id}`, {
+      const res = await api.put(`/todos/${id}`, {
         title: title,
         body: body,
-        finished: !finished,
+        isComplete: !isComplete,
+        id: id,
       });
       const updateTasks = tasks.map((task) => {
         if (task.id === id) {
-          return { ...task, finished: !finished };
+          return res.data;
         } else return task;
       });
-      setTasks(updateTasks);
+      await setTasks(updateTasks);
     } catch (err) {
       console.log(err);
     }
   };
 
   return (
-    <Wrapper style={finished ? { backgroundColor: " #44bba4" } : null}>
+    <Wrapper style={isComplete ? { backgroundColor: " #44bba4" } : null}>
       <div className="card-title">
         <p>{title}</p>
       </div>
@@ -53,22 +34,24 @@ const Card = ({
       </div>
       <div className="icons">
         <button
-          className="material-symbols-outlined icon done"
+          className="material-symbols-outlined icon"
           onClick={handleFinish}
         >
           done
         </button>
-        <button className="material-symbols-outlined icon" onClick={onEdit}>
+        <Link
+          to="/edit"
+          state={{ title, body, id }}
+          className="material-symbols-outlined icon"
+        >
           edit
-        </button>
+        </Link>
       </div>
     </Wrapper>
   );
 };
 
-const Wrapper = styled.div.attrs((props) => ({
-  className: props.className,
-}))`
+const Wrapper = styled.div`
   width: 100%;
   border: 1px solid #dfdfdf;
   border-radius: var(--border-radius);
@@ -110,6 +93,9 @@ const Wrapper = styled.div.attrs((props) => ({
       cursor: pointer;
       border: none;
       padding: 0;
+    }
+    a {
+      text-decoration: none;
     }
   }
 `;
