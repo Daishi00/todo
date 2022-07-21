@@ -1,8 +1,6 @@
 import axios from "axios";
-const mode = "dev";
-const URL = mode === "dev" ? "http://localhost" : "https://production.com";
-const PORT = 3000;
-const baseURL = `${URL}:${PORT}`;
+const baseURL =
+  "http://nestapi-env.eba-9kgvuxij.eu-central-1.elasticbeanstalk.com";
 
 export default axios.create({
   baseURL,
