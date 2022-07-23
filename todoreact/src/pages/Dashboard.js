@@ -19,7 +19,7 @@ const Dashboard = ({
     setEdit(false);
     setTitle("");
     setBody("");
-  });
+  }, []);
 
   return (
     <Wrapper>
