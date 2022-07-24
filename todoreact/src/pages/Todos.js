@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import CardContainer from "../components/CardContainer";
 
-const Todos = ({ tasks, setTasks, setTitle, setBody }) => {
+const Todos = ({ tasks, setTasks }) => {
   return (
     <Wrapper>
       <h2>Your Todos</h2>

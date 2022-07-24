@@ -8,8 +8,6 @@ import CreateTodo from "./pages/CreateTodo";
 import EditTodo from "./pages/EditTodo";
 import { CardProvider } from "./context/cardContext";
 const App = () => {
-  const [title, setTitle] = useState("");
-  const [body, setBody] = useState("");
   const [tasks, setTasks] = useState([]);
 
   return (
@@ -21,16 +19,7 @@ const App = () => {
             <Route path="/" element={<Home />} />
             <Route
               path="/todos/create"
-              element={
-                <CreateTodo
-                  tasks={tasks}
-                  title={title}
-                  body={body}
-                  setTasks={setTasks}
-                  setTitle={setTitle}
-                  setBody={setBody}
-                />
-              }
+              element={<CreateTodo tasks={tasks} setTasks={setTasks} />}
             />
             <Route
               path="/todos"
@@ -38,16 +27,7 @@ const App = () => {
             />
             <Route
               path="/todos/:id"
-              element={
-                <EditTodo
-                  tasks={tasks}
-                  title={title}
-                  body={body}
-                  setTasks={setTasks}
-                  setTitle={setTitle}
-                  setBody={setBody}
-                />
-              }
+              element={<EditTodo tasks={tasks} setTasks={setTasks} />}
             />
           </Routes>
         </div>

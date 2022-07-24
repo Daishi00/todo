@@ -1,11 +1,21 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import api from "../utils/api";
 import { useNavigate, useLocation } from "react-router";
 
-const Form = ({ setTitle, setBody, setTasks, title, body, tasks, id }) => {
+const Form = ({ setTasks, tasks, id, state }) => {
+  const [title, setTitle] = useState("");
+  const [body, setBody] = useState("");
+
   let navigate = useNavigate();
   let location = useLocation();
+
+  useEffect(() => {
+    if (state !== undefined || state != null) {
+      setBody(state.body);
+      setTitle(state.title);
+    }
+  }, [state]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
