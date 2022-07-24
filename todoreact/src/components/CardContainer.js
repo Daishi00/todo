@@ -4,15 +4,7 @@ import Card from "./Card";
 import { useEffect } from "react";
 import api from "../utils/api";
 
-const CardContainer = ({
-  tasks,
-  edit,
-  setTitle,
-  setBody,
-  setEdit,
-  setIdEdit,
-  setTasks,
-}) => {
+const CardContainer = ({ tasks, setTasks }) => {
   useEffect(() => {
     const fetchTasks = async () => {
       try {
@@ -36,11 +28,6 @@ const CardContainer = ({
             isComplete={task.isComplete}
             key={task.id}
             tasks={tasks}
-            edit={edit}
-            setTitle={setTitle}
-            setBody={setBody}
-            setEdit={setEdit}
-            setIdEdit={setIdEdit}
             setTasks={setTasks}
           />
         );

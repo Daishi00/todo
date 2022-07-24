@@ -2,10 +2,9 @@ import React from "react";
 import styled from "styled-components";
 import api from "../utils/api";
 import { Link } from "react-router-dom";
-const Card = ({ title, body, id, isComplete, tasks, setTasks, edit }) => {
+
+const Card = ({ title, body, id, isComplete, tasks, setTasks }) => {
   const handleFinish = async () => {
-    if (edit)
-      return alert("Please complete your editing before finishing a task");
     try {
       const res = await api.put(`/todos/${id}`, {
         title: title,
@@ -40,7 +39,7 @@ const Card = ({ title, body, id, isComplete, tasks, setTasks, edit }) => {
           done
         </button>
         <Link
-          to="/edit"
+          to={`/edit/${id}`}
           state={{ title, body, id }}
           className="material-symbols-outlined icon"
         >

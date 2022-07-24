@@ -5,7 +5,7 @@ const Home = () => {
   return (
     <Wrapper>
       <h1>Welcome in the todo app</h1>
-      <h2>Navigate to dashboard to see your tasks</h2>
+      <h2>Navigate to Todos to see your tasks</h2>
     </Wrapper>
   );
 };

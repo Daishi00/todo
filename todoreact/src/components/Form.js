@@ -1,20 +1,11 @@
 import React from "react";
 import styled from "styled-components";
 import api from "../utils/api";
-import { useNavigate } from "react-router";
+import { useNavigate, useLocation } from "react-router";
 
-const Form = ({
-  setTitle,
-  setBody,
-  setTasks,
-  setEdit,
-  title,
-  body,
-  tasks,
-  edit,
-  idEdit,
-}) => {
+const Form = ({ setTitle, setBody, setTasks, title, body, tasks, id }) => {
   let navigate = useNavigate();
+  let location = useLocation();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -25,6 +16,8 @@ const Form = ({
       setTasks([...tasks, res.data]);
       setTitle("");
       setBody("");
+      alert("Task created successfully");
+      navigate("/todos");
     } catch (err) {
       console.log(err);
     }
@@ -34,22 +27,21 @@ const Form = ({
     e.preventDefault();
     if (formValidation() === false) return;
     try {
-      const res = await api.put(`/todos/${idEdit}`, {
+      const res = await api.put(`/todos/${id}`, {
         title: title,
         body: body,
         isComplete: false,
-        id: idEdit,
+        id: id,
       });
       const updateTasks = tasks.map((task) => {
-        if (task.id === idEdit) {
+        if (task.id === id) {
           return res.data;
         } else return task;
       });
       setTasks(updateTasks);
-      setEdit(false);
       setTitle("");
       setBody("");
-      navigate("/dashboard");
+      navigate("/todos");
     } catch (err) {
       console.log(err);
     }
@@ -86,13 +78,13 @@ const Form = ({
             setBody(e.target.value);
           }}
         />
-        {edit ? (
-          <button className="btn-add" onClick={handleEdit}>
-            Edit Task
-          </button>
-        ) : (
+        {location.pathname === "/todos/create" ? (
           <button className="btn-add" onClick={handleSubmit}>
             Add Task
+          </button>
+        ) : (
+          <button className="btn-add" onClick={handleEdit}>
+            Edit Task
           </button>
         )}
       </form>
