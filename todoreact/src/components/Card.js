@@ -39,7 +39,7 @@ const Card = ({ title, body, id, isComplete, tasks, setTasks }) => {
           done
         </button>
         <Link
-          to={`/edit/${id}`}
+          to={`/todos/${id}`}
           state={{ title, body, id }}
           className="material-symbols-outlined icon"
         >

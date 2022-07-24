@@ -3,7 +3,7 @@ import { useLocation } from "react-router-dom";
 import Form from "../components/Form";
 import { useNavigate } from "react-router";
 
-const Edit = ({ tasks, setTasks, setTitle, setBody, title, body }) => {
+const EditTodo = ({ tasks, setTasks, setTitle, setBody, title, body }) => {
   const navigate = useNavigate();
   const { state } = useLocation();
   useEffect(() => {
@@ -26,4 +26,4 @@ const Edit = ({ tasks, setTasks, setTitle, setBody, title, body }) => {
   );
 };
 
-export default Edit;
+export default EditTodo;

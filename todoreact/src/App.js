@@ -5,7 +5,7 @@ import Header from "./components/Header";
 import Home from "./pages/Home";
 import Todos from "./pages/Todos";
 import CreateTodo from "./pages/CreateTodo";
-import Edit from "./pages/Edit";
+import EditTodo from "./pages/EditTodo";
 import { CardProvider } from "./context/cardContext";
 const App = () => {
   const [title, setTitle] = useState("");
@@ -34,21 +34,12 @@ const App = () => {
             />
             <Route
               path="/todos"
-              element={
-                <Todos
-                  tasks={tasks}
-                  title={title}
-                  body={body}
-                  setTasks={setTasks}
-                  setTitle={setTitle}
-                  setBody={setBody}
-                />
-              }
+              element={<Todos tasks={tasks} setTasks={setTasks} />}
             />
             <Route
-              path="/edit/:id"
+              path="/todos/:id"
               element={
-                <Edit
+                <EditTodo
                   tasks={tasks}
                   title={title}
                   body={body}
