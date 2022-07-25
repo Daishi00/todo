@@ -1,11 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import styled from "styled-components";
-import api from "../utils/api";
+import api from "../../utils/api";
 import { useNavigate, useLocation } from "react-router";
+import TodoContext from "../../context/todoContext";
 
-const Form = ({ setTasks, tasks, id, state }) => {
+const Form = ({ id, state }) => {
   const [title, setTitle] = useState("");
   const [body, setBody] = useState("");
+  const { addTodo, editTodo } = useContext(TodoContext);
 
   let navigate = useNavigate();
   let location = useLocation();
@@ -23,7 +25,7 @@ const Form = ({ setTasks, tasks, id, state }) => {
     try {
       const newTask = { title, body, isComplete: false };
       const res = await api.post("/todos", newTask);
-      setTasks([...tasks, res.data]);
+      addTodo(res.data);
       setTitle("");
       setBody("");
       alert("Task created successfully");
@@ -43,14 +45,10 @@ const Form = ({ setTasks, tasks, id, state }) => {
         isComplete: false,
         id: id,
       });
-      const updateTasks = tasks.map((task) => {
-        if (task.id === id) {
-          return res.data;
-        } else return task;
-      });
-      setTasks(updateTasks);
+      editTodo(res.data);
       setTitle("");
       setBody("");
+      alert("Task edited successfully");
       navigate("/todos");
     } catch (err) {
       console.log(err);

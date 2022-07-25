@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, Outlet } from "react-router-dom";
 import styled from "styled-components";
 
 const Header = () => {
@@ -8,6 +8,7 @@ const Header = () => {
       <Link to="/">Home</Link>
       <Link to="/todos">Todos</Link>
       <Link to="/todos/create">Create</Link>
+      <Outlet />
     </Wrapper>
   );
 };

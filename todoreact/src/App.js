@@ -1,37 +1,26 @@
-import React, { useState } from "react";
+import React from "react";
 import styled from "styled-components";
 import { Routes, Route } from "react-router-dom";
-import Header from "./components/Header";
+import Header from "./components/Header/Header";
 import Home from "./pages/Home";
 import Todos from "./pages/Todos";
 import CreateTodo from "./pages/CreateTodo";
 import EditTodo from "./pages/EditTodo";
-import { CardProvider } from "./context/cardContext";
+import { TodoProvider } from "./context/todoContext";
 const App = () => {
-  const [tasks, setTasks] = useState([]);
-
   return (
     <Wrapper>
       <Header />
-      <CardProvider>
+      <TodoProvider>
         <div className="container">
           <Routes>
             <Route path="/" element={<Home />} />
-            <Route
-              path="/todos/create"
-              element={<CreateTodo tasks={tasks} setTasks={setTasks} />}
-            />
-            <Route
-              path="/todos"
-              element={<Todos tasks={tasks} setTasks={setTasks} />}
-            />
-            <Route
-              path="/todos/:id"
-              element={<EditTodo tasks={tasks} setTasks={setTasks} />}
-            />
+            <Route path="/todos/create" element={<CreateTodo />} />
+            <Route path="/todos" element={<Todos />} />
+            <Route path="/todos/:id" element={<EditTodo />} />
           </Routes>
         </div>
-      </CardProvider>
+      </TodoProvider>
     </Wrapper>
   );
 };

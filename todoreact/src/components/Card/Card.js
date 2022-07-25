@@ -1,9 +1,12 @@
-import React from "react";
+import React, { useContext } from "react";
 import styled from "styled-components";
-import api from "../utils/api";
+import api from "../../utils/api";
 import { Link } from "react-router-dom";
+import TodoContext from "../../context/todoContext";
 
-const Card = ({ title, body, id, isComplete, tasks, setTasks }) => {
+const Card = ({ title, body, id, isComplete }) => {
+  const { finishTodo } = useContext(TodoContext);
+
   const handleFinish = async () => {
     try {
       const res = await api.put(`/todos/${id}`, {
@@ -12,12 +15,7 @@ const Card = ({ title, body, id, isComplete, tasks, setTasks }) => {
         isComplete: !isComplete,
         id: id,
       });
-      const updateTasks = tasks.map((task) => {
-        if (task.id === id) {
-          return res.data;
-        } else return task;
-      });
-      await setTasks(updateTasks);
+      finishTodo(res.data.id);
     } catch (err) {
       console.log(err);
     }
