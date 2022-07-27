@@ -4,6 +4,7 @@ const todoReducer = (state, action) => {
   switch (action.type) {
     case FETCH_TODOS: {
       return {
+        ...state,
         todos: action.payload,
       };
     }

@@ -24,18 +24,19 @@ const CardContainer = () => {
 
   return (
     <Wrapper>
-      {isLoading && <CardSkeleton cards={6} />}
-      {todos.map((todo) => {
-        return (
-          <Card
-            id={todo.id}
-            title={todo.title}
-            body={todo.body}
-            isComplete={todo.isComplete}
-            key={todo.id}
-          />
-        );
-      })}
+      {isLoading && <CardSkeleton cards={5} />}
+      {!isLoading &&
+        todos.map((todo) => {
+          return (
+            <Card
+              id={todo.id}
+              title={todo.title}
+              body={todo.body}
+              isComplete={todo.isComplete}
+              key={todo.id}
+            />
+          );
+        })}
     </Wrapper>
   );
 };
