@@ -1,9 +1,12 @@
 import React from "react";
 import { useLocation } from "react-router-dom";
+import { Location } from "history";
 import Form from "../components/Form/Form";
 import styled from "styled-components";
-const EditTodo = () => {
-  const { state } = useLocation();
+import StateLocation from "../shared/types";
+
+const EditTodo: React.FC = () => {
+  const state = useLocation().state as StateLocation;
 
   if (state == null) {
     return (
@@ -16,7 +19,7 @@ const EditTodo = () => {
     );
   }
 
-  return <Form id={state.id} state={state} />;
+  return <Form state={state} />;
 };
 
 const Wrapper = styled.div`

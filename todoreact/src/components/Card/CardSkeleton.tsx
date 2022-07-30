@@ -3,19 +3,23 @@ import styled from "styled-components";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 
-const CardSkeleton = ({ cards }) => {
-  return Array(cards)
-    .fill(0)
-    .map((_, i) => (
-      <Wrapper key={i}>
-        <div className="card-title">
-          <Skeleton count={1} />
-        </div>
-        <div className="card-body">
-          <Skeleton count={1} />
-        </div>
-      </Wrapper>
-    ));
+const CardSkeleton = ({ cards }: {cards: number}) => {
+  return (
+    <>
+      {Array(cards)
+        .fill(0)
+        .map((_, i) => (
+          <Wrapper key={i}>
+            <div className="card-title">
+              <Skeleton count={1} />
+            </div>
+            <div className="card-body">
+              <Skeleton count={1} />
+            </div>
+          </Wrapper>
+        ))}
+    </>
+  );
 };
 
 const Wrapper = styled.div`

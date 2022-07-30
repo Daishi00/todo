@@ -1,19 +1,22 @@
 import React from "react";
 import styled from "styled-components";
 import Card from "../Card/Card";
-import { useEffect, useContext, useState } from "react";
-import api from "../../utils/api";
-import TodoContext from "../../context/todoContext";
 import CardSkeleton from "../Card/CardSkeleton";
-const CardContainer = () => {
-  const { fetchTodos, todos } = useContext(TodoContext);
+import { useEffect, useState } from "react";
+import { useAppDispatch, useAppSelector } from "../../app/hooks";
+import { fetchTodos, selectTodos } from "../../features/todo/todosSlice";
+import api from "../../utils/api";
+
+const CardContainer: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true);
+  const todos = useAppSelector(selectTodos);
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     const handleFetch = async () => {
       try {
         const res = await api.get("/todos");
-        fetchTodos(res.data);
+        dispatch(fetchTodos(res.data));
         setIsLoading(false);
       } catch (err) {
         console.log(err);

@@ -6,12 +6,13 @@ import Home from "./pages/Home";
 import Todos from "./pages/Todos";
 import CreateTodo from "./pages/CreateTodo";
 import EditTodo from "./pages/EditTodo";
-import { TodoProvider } from "./context/todoContext";
+import { Provider } from "react-redux";
+import { store } from "./app/store";
 const App = () => {
   return (
     <Wrapper>
       <Header />
-      <TodoProvider>
+      <Provider store={store}>
         <div className="container">
           <Routes>
             <Route path="/" element={<Home />} />
@@ -20,7 +21,7 @@ const App = () => {
             <Route path="/todos/:id" element={<EditTodo />} />
           </Routes>
         </div>
-      </TodoProvider>
+      </Provider>
     </Wrapper>
   );
 };

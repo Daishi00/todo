@@ -1,11 +1,23 @@
-import React, { useContext } from "react";
-import styled from "styled-components";
+import React from "react";
+import styled, { CSSProperties } from "styled-components";
 import api from "../../utils/api";
 import { Link } from "react-router-dom";
-import TodoContext from "../../context/todoContext";
+import { finishTodo } from "../../features/todo/todosSlice";
+import { useAppDispatch } from "../../app/hooks";
 
-const Card = ({ title, body, id, isComplete }) => {
-  const { finishTodo } = useContext(TodoContext);
+interface Props {
+  title: string;
+  body: string;
+  id: string;
+  isComplete: boolean;
+}
+
+interface StyleProps {
+  isComplete: boolean;
+}
+
+const Card: React.FC<Props> = ({ title, body, id, isComplete }) => {
+  const dispatch = useAppDispatch();
 
   const handleFinish = async () => {
     try {
@@ -15,14 +27,14 @@ const Card = ({ title, body, id, isComplete }) => {
         isComplete: !isComplete,
         id: id,
       });
-      finishTodo(res.data.id);
+      dispatch(finishTodo(res.data.id));
     } catch (err) {
       console.log(err);
     }
   };
 
   return (
-    <Wrapper style={isComplete ? { backgroundColor: " #44bba4" } : null}>
+    <Wrapper isComplete={isComplete}>
       <div className="card-title">
         <p>{title}</p>
       </div>
@@ -48,7 +60,7 @@ const Card = ({ title, body, id, isComplete }) => {
   );
 };
 
-const Wrapper = styled.div`
+const Wrapper = styled.div<StyleProps>`
   width: 100%;
   border: 1px solid #dfdfdf;
   border-radius: var(--border-radius);
@@ -57,10 +69,7 @@ const Wrapper = styled.div`
   justify-content: center;
   padding: 0 1rem;
   position: relative;
-
-  .finished {
-    background-color: var(--finished-color);
-  }
+  background-color: ${(props) => props.isComplete === true && "#44bba4"};
 
   .card-title {
     font-weight: bold;

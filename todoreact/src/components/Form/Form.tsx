@@ -1,13 +1,19 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useEffect, useState, useContext, MouseEvent } from "react";
 import styled from "styled-components";
 import api from "../../utils/api";
 import { useNavigate, useLocation } from "react-router";
-import TodoContext from "../../context/todoContext";
+import { useAppDispatch } from "../../app/hooks";
+import { addTodo, editTodo } from "../../features/todo/todosSlice";
+import StateLocation from "../../shared/types";
 
-const Form = ({ id, state }) => {
+interface Props {
+  state?: StateLocation;
+}
+
+const Form: React.FC<Props> = ({ state }) => {
   const [title, setTitle] = useState("");
   const [body, setBody] = useState("");
-  const { addTodo, editTodo } = useContext(TodoContext);
+  const dispatch = useAppDispatch();
 
   let navigate = useNavigate();
   let location = useLocation();
@@ -19,13 +25,13 @@ const Form = ({ id, state }) => {
     }
   }, [state]);
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     if (formValidation() === false) return;
     try {
       const newTask = { title, body, isComplete: false };
       const res = await api.post("/todos", newTask);
-      addTodo(res.data);
+      dispatch(addTodo(res.data));
       setTitle("");
       setBody("");
       alert("Task created successfully");
@@ -35,17 +41,18 @@ const Form = ({ id, state }) => {
     }
   };
 
-  const handleEdit = async (e) => {
+  const handleEdit = async (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     if (formValidation() === false) return;
     try {
-      const res = await api.put(`/todos/${id}`, {
+      const res = await api.put(`/todos/${state!.id}`, {
         title: title,
         body: body,
         isComplete: false,
-        id: id,
+        id: state!.id,
       });
-      editTodo(res.data);
+      // not sure if we need it since after response we move to /todos and data is refetched so this action feels kinda useless
+      dispatch(editTodo(res.data));
       setTitle("");
       setBody("");
       alert("Task edited successfully");
@@ -70,7 +77,6 @@ const Form = ({ id, state }) => {
       <form>
         <label>Title</label>
         <input
-          type="text"
           className="title-input"
           value={title}
           onChange={(e) => {
@@ -79,7 +85,6 @@ const Form = ({ id, state }) => {
         />
         <label>Body</label>
         <textarea
-          type="text"
           className="body-input"
           value={body}
           onChange={(e) => {

@@ -1,6 +1,6 @@
 import React from "react";
 import Form from "../components/Form/Form";
-const CreateTodo = () => {
+const CreateTodo: React.FC = () => {
   return <Form />;
 };
 

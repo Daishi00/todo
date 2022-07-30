@@ -1,7 +1,6 @@
 import React from "react";
 import styled from "styled-components";
 import CardContainer from "../components/CardContainer/CardContainer";
-
 const Todos = () => {
   return (
     <Wrapper>

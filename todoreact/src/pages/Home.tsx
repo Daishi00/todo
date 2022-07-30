@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 
-const Home = () => {
+const Home: React.FC = () => {
   return (
     <Wrapper>
       <h1>Welcome in the todo app</h1>
